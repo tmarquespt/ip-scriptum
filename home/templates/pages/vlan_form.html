@@ -1,0 +1,39 @@
+<!-- vlan_form.html -->
+
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="container mt-8"> <!-- Added margin-top for vertical space -->
+    <h2 class="mb-4">{% if object %}Edit{% else %}Add{% endif %} VLAN</h2>
+
+    <form method="post" class="mb-4">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            {{ form.name.errors }}
+        </div>
+        <div class="mb-3">
+            {{ form.vlan_id.label_tag }}
+            {{ form.vlan_id }}
+            {{ form.vlan_id.errors }}
+        </div>
+        <div class="mb-3">
+            {{ form.vlan_color.label_tag }}
+            {{ form.vlan_color }}
+            {{ form.vlan_color.errors }}
+        </div>
+        <div class="mb-3">
+            {{ form.gateway.label_tag }}
+            {{ form.gateway }}
+            {{ form.gateway.errors }}
+        </div>
+        <div class="mb-3">
+            {{ form.dhcp_range.label_tag }}
+            {{ form.dhcp_range }}
+            {{ form.dhcp_range.errors }}
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+{% endblock %}

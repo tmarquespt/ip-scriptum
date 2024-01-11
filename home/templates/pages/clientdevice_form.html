@@ -1,0 +1,54 @@
+<!-- clientdevice_form.html -->
+
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="container mt-8">
+    <h2>{% if object %}Edit{% else %}Add{% endif %} Client Device</h2>
+
+    <form method="post" class="mb-4">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            {{ form.name.errors }}
+        </div>
+        <div class="mb-3">
+            {{ form.ip_address.label_tag }}
+            {{ form.ip_address }}
+            {{ form.ip_address.errors }}
+        </div>
+        <div class="mb-3">
+            {{ form.vlan.label_tag }}
+            {{ form.vlan }}
+            {{ form.vlan.errors }}
+        </div>
+        <div class="mb-3">
+            {{ form.type.label_tag }}
+            {{ form.type }}
+            {{ form.type.errors }}
+        </div>
+        <div class="mb-3">
+            {{ form.connection_type.label_tag }}
+            {{ form.connection_type }}
+            {{ form.connection_type.errors }}
+        </div>
+        <div class="mb-3">
+            {{ form.ssid.label_tag }}
+            {{ form.ssid }}
+            {{ form.ssid.errors }}
+        </div>
+        <div class="mb-3">
+            {{ form.patch_panel_port.label_tag }}
+            {{ form.patch_panel_port }}
+            {{ form.patch_panel_port.errors }}
+        </div>
+        <div class="mb-3">
+            {{ form.switch_router_port.label_tag }}
+            {{ form.switch_router_port }}
+            {{ form.switch_router_port.errors }}
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+{% endblock %}
