@@ -36,8 +36,7 @@ We welcome contributions to IP SYMPHONY! If you have suggestions, bug reports, o
 For support, please open an issue on the GitHub repository or contact [Support Contact Information].
 
 ## AppSeed
-IP SYMPHONY uses Django Soft Design template from AppSeed.
-[Django Soft Design](https://appseed.us/product/soft-ui-design/django/) - **Django** Starter provided by **[AppSeed](https://appseed.us/)**
+IP SYMPHONY uses [Django Soft Design](https://appseed.us/product/soft-ui-design/django/) - **Django** Starter provided by **[AppSeed](https://appseed.us/)**
 
 ## License
 IP SYMPHONY is licensed under the **[MIT License](https://github.com/tmarquespt/ipsymhpony/blob/master/LICENSE.md)**
