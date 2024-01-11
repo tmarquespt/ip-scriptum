@@ -1,11 +1,8 @@
-## IP SYMPHONY - Seamless Network Organizer
-
-
 ![IP SYMPHONY Logo](https://raw.githubusercontent.com/tmarquespt/ip-symphony/master/home/static/img/ipsymponhyhorlogo.png)
 
-## IP SYMPHONY - Seamless Network Organizer
 
 > :warning: **Pre-alpha Version**: Some basic functions are still missing 
+
 
 ## Introduction
 Welcome to IP SYMPHONY, a comprehensive network database and management tool designed to simplify the organization and tracking of devices, VLANs, and networks within your infrastructure. IP SYMPHONY aims to be your go-to network notepad, ensuring that all equipment, VLANs, IPs, and network configurations are easily accessible and manageable.
@@ -44,3 +41,6 @@ IP SYMPHONY uses Django Soft Design template from AppSeed.
 
 ## License
 IP SYMPHONY is licensed under the **[MIT License](https://github.com/tmarquespt/ipsymhpony/blob/master/LICENSE.md)**
+
+## IP SYMPHONY - Seamless Network Organizer
+
