@@ -33,7 +33,7 @@ For support, please open an issue on the GitHub repository or contact [Support C
 
 ## AppSeed
 IP SYMPHONY uses Django Soft Design template from AppSeed.
-[Django Soft Design](https://appseed.us/product/soft-ui-design/django/) - **Django** Starter provided by **[AppSeed](https://appseed.us/)**
+[Django Soft Design](https://appseed.us/product/soft-ui-design/django/) - **Django** Starter provided by **[AppSeed](https://appseed.us/)** Which has it's on **[License](https://github.com/app-generator/django-soft-ui-design/blob/master/LICENSE.md)**
 
 ## License
 [Details about the software's license]
