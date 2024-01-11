@@ -1,5 +1,7 @@
 # IP SYMPHONY - Seamless Network Organizer
 
+
+![IP SYMPHONY Logo](https://github.com/yourusername/your-repository/blob/main/logo.png](https://github.com/yourusername/your-repository/blob/main/logo.png)
 ## Introduction
 Welcome to IP SYMPHONY, a comprehensive network database and management tool designed to simplify the organization and tracking of devices, VLANs, and networks within your infrastructure. IP SYMPHONY aims to be your go-to network notepad, ensuring that all equipment, VLANs, IPs, and network configurations are easily accessible and manageable.
 
