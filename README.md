@@ -1,4 +1,4 @@
-![IP SYMPHONY Logo](https://raw.githubusercontent.com/tmarquespt/ip-symphony/master/home/static/img/ipsymponhyhorlogo.png)
+![IP SYMPHONY Logo](https://raw.githubusercontent.com/tmarquespt/ip-symphony/master/home/static/img/ipscriptum.png)
 
 
 > :warning: **Pre-alpha Version**: Some basic functions are still missing 
@@ -33,7 +33,7 @@ To get started with IP SYMPHONY, follow these steps:
 We welcome contributions to IP SYMPHONY! If you have suggestions, bug reports, or contributions, please feel free to open an issue or a pull request.
 
 ## Support
-For support, please open an issue on the GitHub repository or contact [Support Contact Information].
+For support, please open an issue on the GitHub repository
 
 ## AppSeed
 IP SYMPHONY uses [Django Soft Design](https://appseed.us/product/soft-ui-design/django/) - **Django** Starter provided by **[AppSeed](https://appseed.us/)**
@@ -41,5 +41,5 @@ IP SYMPHONY uses [Django Soft Design](https://appseed.us/product/soft-ui-design/
 ## License
 IP SYMPHONY is licensed under the **[MIT License](https://github.com/tmarquespt/ipsymhpony/blob/master/LICENSE.md)**
 
-## IP SYMPHONY - Seamless Network Organizer
+## IP Scriptum - Seamless Network Organizer
 
