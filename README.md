@@ -1,11 +1,11 @@
-![IP SYMPHONY Logo](https://raw.githubusercontent.com/tmarquespt/ip-symphony/master/home/static/img/ipscriptum.png)
+![IP Scriptum Logo](https://raw.githubusercontent.com/tmarquespt/ip-symphony/master/home/static/img/ipscriptum.png)
 
 
 > :warning: **Pre-alpha Version**: Some basic functions are still missing 
 
 
 ## Introduction
-Welcome to IP SYMPHONY, a comprehensive network database and management tool designed to simplify the organization and tracking of devices, VLANs, and networks within your infrastructure. IP SYMPHONY aims to be your go-to network notepad, ensuring that all equipment, VLANs, IPs, and network configurations are easily accessible and manageable.
+Welcome to IP Scriptum, a comprehensive network database and management tool designed to simplify the organization and tracking of devices, VLANs, and networks within your infrastructure. IP Scriptum aims to be your go-to network notepad, ensuring that all equipment, VLANs, IPs, and network configurations are easily accessible and manageable.
 
 ## Features
 - **Client Devices Management**: Keep track of all your client devices with detailed information and configurations.
@@ -17,8 +17,8 @@ Welcome to IP SYMPHONY, a comprehensive network database and management tool des
 - **Customizable Data Fields**: Tailor the database to fit your specific network needs.
 
 ## Getting Started
-To get started with IP SYMPHONY, follow these steps:
-1. **Installation**: [Instructions on how to install IP SYMPHONY]
+To get started with IP Scriptum, follow these steps:
+1. **Installation**: [Instructions on how to install IP Scriptum]
 2. **Initial Setup**: Configure your initial network settings and preferences.
 3. **Adding Devices**: Learn how to add and categorize your network devices.
 4. **Defining VLANs**: Instructions on how to create and assign VLANs.
@@ -30,16 +30,16 @@ To get started with IP SYMPHONY, follow these steps:
 - **VLAN and Network Configuration**: Detailed instructions on VLAN management and network configuration tasks.
 
 ## Contributing
-We welcome contributions to IP SYMPHONY! If you have suggestions, bug reports, or contributions, please feel free to open an issue or a pull request.
+We welcome contributions to IP Scriptum! If you have suggestions, bug reports, or contributions, please feel free to open an issue or a pull request.
 
 ## Support
 For support, please open an issue on the GitHub repository
 
 ## AppSeed
-IP SYMPHONY uses [Django Soft Design](https://appseed.us/product/soft-ui-design/django/) - **Django** Starter provided by **[AppSeed](https://appseed.us/)**
+IP Scriptum uses [Django Soft Design](https://appseed.us/product/soft-ui-design/django/) - **Django** Starter provided by **[AppSeed](https://appseed.us/)**
 
 ## License
-IP SYMPHONY is licensed under the **[MIT License](https://github.com/tmarquespt/ipsymhpony/blob/master/LICENSE.md)**
+IP Scriptum is licensed under the **[MIT License](https://github.com/tmarquespt/ipsymhpony/blob/master/LICENSE.md)**
 
 ## IP Scriptum - Seamless Network Organizer
 
