@@ -28,9 +28,11 @@ urlpatterns = [
 
     path('devices/', GeneralDeviceListView.as_view(), name='device_list'),
 
-
-
-
-
-
+    #SET CURRENT SITE
+    path('set-current-site/', views.set_current_site, name='set_current_site'),
 ]
+
+
+
+
+

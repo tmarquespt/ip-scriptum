@@ -6,7 +6,7 @@ from .models import *
 class VLANForm(forms.ModelForm):
     class Meta:
         model = VLAN
-        fields = ['name', 'vlan_id', 'vlan_color', 'gateway', 'dhcp_range']
+        fields = ['site', 'name', 'vlan_id', 'vlan_color', 'gateway', 'dhcp_range']
         widgets = {
             'vlan_color': forms.TextInput(attrs={'type': 'color'}),
             # Add other widgets as needed
@@ -15,7 +15,7 @@ class VLANForm(forms.ModelForm):
 class SSIDForm(forms.ModelForm):
     class Meta:
         model = SSID
-        fields = ['ssid_name', 'vlan']
+        fields = ['site', 'ssid_name', 'vlan']
 
 class ClientDeviceForm(forms.ModelForm):
     class Meta:

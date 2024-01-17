@@ -9,7 +9,7 @@
           <a class="navbar-brand font-weight-bolder ms-sm-3"
             href="/" rel="tooltip"
             title="Seamless Network Organizer" data-placement="bottom">
-            IP SYMPHONY
+            IP Scriptum
           </a>
           <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse"
             data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false"
@@ -906,9 +906,22 @@
               </li>
               {% endif %}
 
-              <li class="nav-item my-auto ms-3 ms-lg-0">
-                <a href="https://appseed.us/product/soft-ui-design/django/" target="_blank"
-                  class="btn btn-sm  bg-gradient-primary  btn-round mb-0 me-1 mt-2 mt-md-0">Reports</a>
+              <li class="nav-item dropdown">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-lg-12 text-end">
+                      <form method="get" action="{% url 'set_current_site' %}">
+                        <select name="site_id" onchange="this.form.submit()" class="form-control">
+                          {% for site in sites %}
+                            <option value="{{ site.id }}" {% if site.id == current_site.id %} selected {% endif %}>
+                              {{ site.name }}
+                            </option>
+                          {% endfor %}
+                        </select>
+                      </form>
+                    </div>
+                  </div>
+                </div>
               </li>
             </ul>
           </div>

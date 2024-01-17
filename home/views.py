@@ -1,35 +1,46 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, View
 from .models import *
 from .forms import *
 from django.urls import reverse_lazy
+from django.shortcuts import render, get_object_or_404, redirect
 
-# Create your views here.
 
+# Helper function to get the current site
+def get_current_site(request):
+    site_id = request.session.get('current_site_id', None)
+    if site_id:
+        return get_object_or_404(Site, id=site_id)
+    else:
+        default_site = Site.objects.first()  # get the first available site
+        request.session['current_site_id'] = default_site.id
+        return default_site
+
+# View to set the current site
+def set_current_site(request):
+    site_id = request.GET.get('site_id')
+    if site_id:
+        request.session['current_site_id'] = int(site_id)
+    return redirect('index')
+
+# Index view
 def index(request):
-
     # Page from the theme 
     return render(request, 'pages/index.html')
 
-################################################
-#
-# VLANs
-#
-###############################################
-
-
-
+# VLAN views
 class VLANListView(ListView):
     model = VLAN
     template_name = 'pages/vlan_list.html'
     context_object_name = 'vlans'
 
     def get_queryset(self):
+        current_site = get_current_site(self.request)
         query = self.request.GET.get('q')
         if query:
-            return VLAN.objects.filter(name__icontains=query)
-        return VLAN.objects.all()
+            return VLAN.objects.filter(site=current_site, name__icontains=query)
+        return VLAN.objects.filter(site=current_site)
 
 class VLANCreateView(CreateView):
     model = VLAN
@@ -37,22 +48,25 @@ class VLANCreateView(CreateView):
     template_name = 'pages/vlan_form.html'
     success_url = reverse_lazy('vlan_list')
 
+    def form_valid(self, form):
+        form.instance.site = get_current_site(self.request)
+        return super().form_valid(form)
+
 class VLANUpdateView(UpdateView):
     model = VLAN
     form_class = VLANForm
     template_name = 'pages/vlan_form.html'
     success_url = reverse_lazy('vlan_list')
 
-################################################
-#
-# SSIDs
-#
-###############################################
-
+# SSID views
 class SSIDListView(ListView):
     model = SSID
     template_name = 'pages/ssid_list.html'
     context_object_name = 'ssids'
+
+    def get_queryset(self):
+        current_site = get_current_site(self.request)
+        return SSID.objects.filter(site=current_site)
 
 class SSIDCreateView(CreateView):
     model = SSID
@@ -60,35 +74,34 @@ class SSIDCreateView(CreateView):
     template_name = 'pages/ssid_form.html'
     success_url = reverse_lazy('ssid_list')
 
+    def form_valid(self, form):
+        form.instance.site = get_current_site(self.request)
+        return super().form_valid(form)
+
 class SSIDUpdateView(UpdateView):
     model = SSID
     form_class = SSIDForm
     template_name = 'pages/ssid_form.html'
     success_url = reverse_lazy('ssid_list')
 
-
-
-################################################
-#
-# Devices
-#
-###############################################
-
-from django.views.generic import ListView, CreateView, UpdateView
-from .models import ClientDevice, NetworkInfrastructureDevice
-from .forms import ClientDeviceForm, NetworkInfrastructureDeviceForm
-from django.urls import reverse_lazy
-
 # ClientDevice views
 class ClientDeviceListView(ListView):
     model = ClientDevice
     template_name = 'pages/device_list.html'
+
+    def get_queryset(self):
+        current_site = get_current_site(self.request)
+        return ClientDevice.objects.filter(site=current_site)
 
 class ClientDeviceCreateView(CreateView):
     model = ClientDevice
     form_class = ClientDeviceForm
     template_name = 'pages/clientdevice_form.html'
     success_url = reverse_lazy('client_device_list')
+
+    def form_valid(self, form):
+        form.instance.site = get_current_site(self.request)
+        return super().form_valid(form)
 
 class ClientDeviceUpdateView(UpdateView):
     model = ClientDevice
@@ -99,27 +112,35 @@ class ClientDeviceUpdateView(UpdateView):
 # NetworkInfrastructureDevice views
 class NetworkInfrastructureDeviceListView(ListView):
     model = NetworkInfrastructureDevice
-    template_name = 'device_list.html'
+    template_name = 'pages/device_list.html'
+
+    def get_queryset(self):
+        current_site = get_current_site(self.request)
+        return NetworkInfrastructureDevice.objects.filter(site=current_site)
 
 class NetworkInfrastructureDeviceCreateView(CreateView):
     model = NetworkInfrastructureDevice
     form_class = NetworkInfrastructureDeviceForm
     success_url = reverse_lazy('network_infrastructure_device_list')
 
+    def form_valid(self, form):
+        form.instance.site = get_current_site(self.request)
+        return super().form_valid(form)
+
 class NetworkInfrastructureDeviceUpdateView(UpdateView):
     model = NetworkInfrastructureDevice
     form_class = NetworkInfrastructureDeviceForm
     success_url = reverse_lazy('network_infrastructure_device_list')
 
-
-from django.views import View
-from django.shortcuts import render
-
+# GeneralDeviceListView
 class GeneralDeviceListView(View):
     template_name = 'pages/device_list.html'
 
     def get(self, request, *args, **kwargs):
-        client_devices = ClientDevice.objects.all()
-        network_devices = NetworkInfrastructureDevice.objects.all()
+        current_site = get_current_site(request)
+        client_devices = ClientDevice.objects.filter(site=current_site)
+        network_devices = NetworkInfrastructureDevice.objects.filter(site=current_site)
         devices = list(client_devices) + list(network_devices)
-        return render(request, self.template_name, {'devices': devices})
+        context = {'devices': devices}
+        return render(request, self.template_name, context)
+
