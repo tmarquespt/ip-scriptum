@@ -31,10 +31,10 @@ if not SECRET_KEY:
 DEBUG = 'RENDER' not in os.environ
 
 # Docker HOST
-ALLOWED_HOSTS = ['localhost','127.0.0.1','172.16.192.25']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','172.16.192.25','ips.queijoinc.online']
 
 # Add here your deployment HOSTS
-CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://localhost:5085','http://172.16.192.25:5085/']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://localhost:5085','http://172.16.192.25:5085/','https://ips.queijoinc.online']
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:    
