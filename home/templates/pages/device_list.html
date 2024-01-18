@@ -29,24 +29,24 @@
         </div>
     </div>
 
-    <button id="toggleColorBtn" class="btn btn-info mb-3">Toggle VLAN Color</button>
+    <button id="toggleColorBtn" class="btn btn-info mb-3">Toggle NETWORK Color</button>
 
     <table class="table table-striped table-hover" id="deviceTable">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>IP Address</th>
-                <th>VLAN</th>
+                <th>NETWORK</th>
                 <th>Type</th>
                 <th>Edit</th>
             </tr>
         </thead>
         <tbody>
             {% for device in devices %}
-            <tr class="device-row" data-vlan-color="{{ device.vlan.vlan_color }}">
+            <tr class="device-row" data-network-color="{{ device.network.network_color }}">
                 <td>{{ device.name }}</td>
                 <td>{{ device.ip_address }}</td>
-                <td>{{ device.vlan.name }}</td>
+                <td>{{ device.network.name }}</td>
                 <td>{{ device.get_type_display }}</td>
                 <td>
                     <!-- Adjust the edit URL based on the device type -->
@@ -71,7 +71,7 @@
                 if (colorToggle) {
                     row.style.backgroundColor = '';
                 } else {
-                    row.style.backgroundColor = row.getAttribute('data-vlan-color');
+                    row.style.backgroundColor = row.getAttribute('data-network-color');
                 }
             });
             colorToggle = !colorToggle;

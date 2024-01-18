@@ -30,28 +30,28 @@ def index(request):
     # Page from the theme 
     return render(request, 'pages/index.html')
 
-# VLAN views
-class VLANListView(ListView):
-    model = VLAN
-    template_name = 'pages/vlan_list.html'
-    context_object_name = 'vlans'
+# NETWORK views
+class NETWORKListView(ListView):
+    model = NETWORK
+    template_name = 'pages/network_list.html'
+    context_object_name = 'networks'
 
     def get_queryset(self):
         current_site = get_current_site(self.request)
         query = self.request.GET.get('q')
         if query:
-            return VLAN.objects.filter(site=current_site, name__icontains=query)
-        return VLAN.objects.filter(site=current_site)
+            return NETWORK.objects.filter(site=current_site, name__icontains=query)
+        return NETWORK.objects.filter(site=current_site)
 
-class VLANCreateView(CreateView):
-    model = VLAN
-    form_class = VLANForm
-    template_name = 'pages/vlan_form.html'
-    success_url = reverse_lazy('vlan_list')
+class NETWORKCreateView(CreateView):
+    model = NETWORK
+    form_class = NETWORKForm
+    template_name = 'pages/network_form.html'
+    success_url = reverse_lazy('network_list')
 
     def form_valid(self, form):
         form.instance.site = get_current_site(self.request)
-        return super(VLANCreateView, self).form_valid(form)
+        return super(NETWORKCreateView, self).form_valid(form)
     
     def form_invalid(self, form):
         # Log form errors for debugging
@@ -65,11 +65,11 @@ class VLANCreateView(CreateView):
         initial['site'] = get_current_site(self.request).pk
         return initial
 
-class VLANUpdateView(UpdateView):
-    model = VLAN
-    form_class = VLANForm
-    template_name = 'pages/vlan_form.html'
-    success_url = reverse_lazy('vlan_list')
+class NETWORKUpdateView(UpdateView):
+    model = NETWORK
+    form_class = NETWORKForm
+    template_name = 'pages/network_form.html'
+    success_url = reverse_lazy('network_list')
 
 # SSID views
 class SSIDListView(ListView):
@@ -119,7 +119,7 @@ class ClientDeviceCreateView(CreateView):
     def get_form(self, form_class=None):
         form = super(ClientDeviceCreateView, self).get_form(form_class)
         current_site = get_current_site(self.request)
-        form.fields['vlan'].queryset = VLAN.objects.filter(site=current_site)
+        form.fields['network'].queryset = NETWORK.objects.filter(site=current_site)
         return form
 
 class ClientDeviceUpdateView(UpdateView):
@@ -131,7 +131,7 @@ class ClientDeviceUpdateView(UpdateView):
     def get_form(self, form_class=None):
         form = super(ClientDeviceUpdateView, self).get_form(form_class)
         current_site = get_current_site(self.request)
-        form.fields['vlan'].queryset = VLAN.objects.filter(site=current_site)
+        form.fields['network'].queryset = NETWORK.objects.filter(site=current_site)
         return form
 
 # NetworkInfrastructureDevice views

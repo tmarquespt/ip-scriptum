@@ -32,14 +32,14 @@
         <thead>
             <tr>
                 <th>SSID Name</th>
-                <th>VLAN</th>
+                <th>NETWORK</th>
             </tr>
         </thead>
         <tbody>
             {% for ssid in ssids %}
-            <tr style="background-color: {{ ssid.vlan.vlan_color }}; cursor: pointer;" onclick="location.href='{% url 'ssid_edit' ssid.pk %}'">
+            <tr style="background-color: {{ ssid.network.network_color }}; cursor: pointer;" onclick="location.href='{% url 'ssid_edit' ssid.pk %}'">
                 <td>{{ ssid.ssid_name }}</td>
-                <td>{{ ssid.vlan.name }}</td>
+                <td>{{ ssid.network.name }}</td>
             </tr>
             {% empty %}
             <tr>

@@ -1,4 +1,4 @@
-<!-- vlan_form.html -->
+<!-- network_form.html -->
 
 {% extends 'layouts/base.html' %}
 
@@ -11,7 +11,7 @@
 </div>
 {% endif %}
 <div class="container mt-8"> <!-- Added margin-top for vertical space -->
-    <h2 class="mb-4">{% if object %}Edit{% else %}Add{% endif %} VLAN</h2>
+    <h2 class="mb-4">{% if object %}Edit{% else %}Add{% endif %} NETWORK</h2>
 
     <form method="post" class="mb-4">
         {% csrf_token %}
@@ -23,14 +23,14 @@
             
         </div>
         <div class="mb-3">
-            {{ form.vlan_id.label_tag }}
-            {{ form.vlan_id }}
-            {{ form.vlan_id.errors }}
+            {{ form.network_id.label_tag }}
+            {{ form.network_id }}
+            {{ form.network_id.errors }}
         </div>
         <div class="mb-3">
-            {{ form.vlan_color.label_tag }}
-            {{ form.vlan_color }}
-            {{ form.vlan_color.errors }}
+            {{ form.network_color.label_tag }}
+            {{ form.network_color }}
+            {{ form.network_color.errors }}
         </div>
         <div class="mb-3">
             {{ form.gateway.label_tag }}

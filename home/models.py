@@ -7,24 +7,24 @@ class Site(models.Model):
     def __str__(self):
         return self.name
 
-class VLAN(models.Model):
+class NETWORK(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    vlan_id = models.IntegerField()
-    vlan_color = models.CharField(max_length=7, help_text="Enter the color in HEX format (e.g., #FF5733)")
+    network_id = models.IntegerField()
+    network_color = models.CharField(max_length=7, help_text="Enter the color in HEX format (e.g., #FF5733)")
     gateway = models.GenericIPAddressField(help_text="Enter the gateway IP address")
     dhcp_range = models.CharField(max_length=50, help_text="Enter the DHCP range (e.g., 192.168.1.100-192.168.1.200)")
 
     def __str__(self):
-        return f"{self.name} (VLAN {self.vlan_id})"
+        return f"{self.name} (NETWORK {self.network_id})"
 
     class Meta:
-        unique_together = ('site', 'vlan_id')
+        unique_together = ('site', 'network_id')
 
 class SSID(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     ssid_name = models.CharField(max_length=100)
-    vlan = models.ForeignKey(VLAN, on_delete=models.CASCADE)
+    network = models.ForeignKey(NETWORK, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.ssid_name}"
@@ -57,7 +57,7 @@ class ClientDevice(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     ip_address = models.GenericIPAddressField()
-    vlan = models.ForeignKey(VLAN, on_delete=models.CASCADE)
+    network = models.ForeignKey(NETWORK, on_delete=models.CASCADE)
     type = models.CharField(max_length=20, choices=DEVICE_TYPES)
 
     CONNECTION_TYPE_CHOICES = [
@@ -83,7 +83,7 @@ class NetworkInfrastructureDevice(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     ip_address = models.GenericIPAddressField()
-    vlan = models.ForeignKey(VLAN, on_delete=models.CASCADE)
+    network = models.ForeignKey(NETWORK, on_delete=models.CASCADE)
     type = models.CharField(max_length=20, choices=INFRASTRUCTURE_TYPES)
     number_of_ports = models.IntegerField(help_text="Number of ports (for switches and routers)")
 
@@ -94,7 +94,7 @@ class Port(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     device = models.ForeignKey(NetworkInfrastructureDevice, related_name='ports', on_delete=models.CASCADE)
     port_number = models.IntegerField()
-    active_vlans = models.ManyToManyField(VLAN, blank=True)
+    active_networks = models.ManyToManyField(NETWORK, blank=True)
     is_trunk = models.BooleanField(default=False)
 
     def __str__(self):

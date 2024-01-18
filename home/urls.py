@@ -6,10 +6,10 @@ from .views import *
 urlpatterns = [
     path('', views.index, name='index'),
 
-    # VLANS
-    path('vlans/', VLANListView.as_view(), name='vlan_list'),
-    path('vlans/add/', VLANCreateView.as_view(), name='vlan_add'),
-    path('vlans/<int:pk>/edit/', VLANUpdateView.as_view(), name='vlan_edit'),
+    # NETWORKS
+    path('networks/', NETWORKListView.as_view(), name='network_list'),
+    path('networks/add/', NETWORKCreateView.as_view(), name='network_add'),
+    path('networks/<int:pk>/edit/', NETWORKUpdateView.as_view(), name='network_edit'),
 
     #SSIDs
     path('ssids/', SSIDListView.as_view(), name='ssid_list'),
