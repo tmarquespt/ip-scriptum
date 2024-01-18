@@ -5,6 +5,7 @@ from .models import *
 from .forms import *
 from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 
 
 # Helper function to get the current site
@@ -50,7 +51,19 @@ class VLANCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.site = get_current_site(self.request)
-        return super().form_valid(form)
+        return super(VLANCreateView, self).form_valid(form)
+    
+    def form_invalid(self, form):
+        # Log form errors for debugging
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, f"{field}: {error}")
+        return super().form_invalid(form)
+    
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['site'] = get_current_site(self.request).pk
+        return initial
 
 class VLANUpdateView(UpdateView):
     model = VLAN
@@ -102,12 +115,24 @@ class ClientDeviceCreateView(CreateView):
     def form_valid(self, form):
         form.instance.site = get_current_site(self.request)
         return super().form_valid(form)
+    
+    def get_form(self, form_class=None):
+        form = super(ClientDeviceCreateView, self).get_form(form_class)
+        current_site = get_current_site(self.request)
+        form.fields['vlan'].queryset = VLAN.objects.filter(site=current_site)
+        return form
 
 class ClientDeviceUpdateView(UpdateView):
     model = ClientDevice
     form_class = ClientDeviceForm
     template_name = 'pages/clientdevice_form.html'
     success_url = reverse_lazy('client_device_list')
+
+    def get_form(self, form_class=None):
+        form = super(ClientDeviceUpdateView, self).get_form(form_class)
+        current_site = get_current_site(self.request)
+        form.fields['vlan'].queryset = VLAN.objects.filter(site=current_site)
+        return form
 
 # NetworkInfrastructureDevice views
 class NetworkInfrastructureDeviceListView(ListView):

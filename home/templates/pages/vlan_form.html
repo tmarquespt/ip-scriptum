@@ -3,15 +3,24 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
+{% if messages %}
+<div class="alert alert-danger" role="alert">
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
 <div class="container mt-8"> <!-- Added margin-top for vertical space -->
     <h2 class="mb-4">{% if object %}Edit{% else %}Add{% endif %} VLAN</h2>
 
     <form method="post" class="mb-4">
         {% csrf_token %}
+        {{ form.site }}
         <div class="mb-3">
             {{ form.name.label_tag }}
             {{ form.name }}
             {{ form.name.errors }}
+            
         </div>
         <div class="mb-3">
             {{ form.vlan_id.label_tag }}

@@ -56,16 +56,16 @@
                           </svg>
                         </div>
                       </div>
-                      Landing Pages
+                      Client Devices
                     </div>
-                    <a href="/" class="dropdown-item border-radius-md">
-                      <span class="ps-3">Presentation</span>
+                    <a href="{% url 'device_list' %}" class="dropdown-item border-radius-md">
+                      <span class="ps-3">Devices</span>
                     </a>
-                    <a href="{% url 'about-us' %}" class="dropdown-item border-radius-md">
-                      <span class="ps-3">About Us</span>
+                    <a href="{% url 'vlan_list' %}" class="dropdown-item border-radius-md">
+                      <span class="ps-3">Vlans</span>
                     </a>
-                    <a href="{% url 'contact-us' %}" class="dropdown-item border-radius-md">
-                      <span class="ps-3">Contact Us</span>
+                    <a href="{% url 'ssid_list' %}" class="dropdown-item border-radius-md">
+                      <span class="ps-3">SSID</span>
                     </a>
                     <a href="{% url 'author' %}" class="dropdown-item border-radius-md">
                       <span class="ps-3">Author</span>

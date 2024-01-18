@@ -3,6 +3,16 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
+<head>
+
+    <!-- jQuery Library -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+    <!-- DataTables CSS and JS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+   
+</head>
 <div class="container mt-8">
     <h2>VLAN List</h2>
 
@@ -18,7 +28,7 @@
         </div>
     </div>
 
-    <table class="table table-striped table-hover">
+    <table class="table table-striped table-hover" id="vlanTable">
         <thead>
             <tr>
                 <th>Name</th>
@@ -43,4 +53,12 @@
         </tbody>
     </table>
 </div>
+<script>
+    $(document).ready(function() {
+        $('#vlanTable').DataTable({
+            "order": [[0, "asc"]], // Default sorting on the first column
+            "pageLength": -1 // Show all records
+        });
+    });
+</script>
 {% endblock %}

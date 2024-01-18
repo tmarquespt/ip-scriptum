@@ -10,13 +10,16 @@ class Site(models.Model):
 class VLAN(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    vlan_id = models.IntegerField(unique=True)
+    vlan_id = models.IntegerField()
     vlan_color = models.CharField(max_length=7, help_text="Enter the color in HEX format (e.g., #FF5733)")
     gateway = models.GenericIPAddressField(help_text="Enter the gateway IP address")
     dhcp_range = models.CharField(max_length=50, help_text="Enter the DHCP range (e.g., 192.168.1.100-192.168.1.200)")
 
     def __str__(self):
-        return f"{self.site.name} - {self.name} (VLAN {self.vlan_id})"
+        return f"{self.name} (VLAN {self.vlan_id})"
+
+    class Meta:
+        unique_together = ('site', 'vlan_id')
 
 class SSID(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
@@ -24,7 +27,7 @@ class SSID(models.Model):
     vlan = models.ForeignKey(VLAN, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.site.name} - {self.ssid_name}"
+        return f"{self.ssid_name}"
 
 class PatchPanel(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
@@ -32,7 +35,7 @@ class PatchPanel(models.Model):
     number_of_ports = models.IntegerField()
 
     def __str__(self):
-        return f"{self.site.name} - {self.name}"
+        return f"{self.name}"
 
 class PatchPanelPort(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
@@ -40,7 +43,7 @@ class PatchPanelPort(models.Model):
     port_number = models.IntegerField()
 
     def __str__(self):
-        return f"{self.site.name} - Port {self.port_number} on {self.patch_panel.name}"
+        return f"Port {self.port_number} on {self.patch_panel.name}"
 
 class ClientDevice(models.Model):
     DEVICE_TYPES = [
@@ -68,7 +71,7 @@ class ClientDevice(models.Model):
     switch_router_port = models.ForeignKey('Port', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.site.name} - {self.name} - {self.ip_address} - {self.get_type_display()}"
+        return f"{self.name} - {self.ip_address} - {self.get_type_display()}"
 
 class NetworkInfrastructureDevice(models.Model):
     INFRASTRUCTURE_TYPES = [
@@ -85,7 +88,7 @@ class NetworkInfrastructureDevice(models.Model):
     number_of_ports = models.IntegerField(help_text="Number of ports (for switches and routers)")
 
     def __str__(self):
-        return f"{self.site.name} - {self.name} - {self.type}"
+        return f"{self.name} - {self.type}"
 
 class Port(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
