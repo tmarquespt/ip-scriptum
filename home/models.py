@@ -132,5 +132,4 @@ class Port(models.Model):
         return f"{self.device.site.name} - Port {self.port_number} on {self.device.name}"
 
 
-#Serviços disponibilizados por cada equipamento
-# Listagem dos tabelas com ordenação por campo.
+

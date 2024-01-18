@@ -14,6 +14,14 @@
 <div class="container mt-8">
     <h2 class="mb-4">{% if object %}Edit{% else %}Add{% endif %} NETWORK</h2>
 
+    <!-- Delete button at the top right -->
+    <div class="float-right">
+        <form method="post" action="{% url 'network_delete' object.pk %}">
+            {% csrf_token %}
+            <button type="button" class="btn btn-danger" onclick="confirmDelete('{{ object.name }}')">Delete</button>
+        </form>
+    </div>
+
     <form method="post" class="mb-4" id="network_form">
         {% csrf_token %}
         {{ form.site }}
@@ -91,13 +99,20 @@
                 {{ form.secondary_dns.errors }}
             </div>
         </div>
-        <button type="button" onclick="toggleAdvanced()" class="btn btn-secondary">Advanced</button>
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" onclick="toggleAdvanced()" class="btn btn-outline-primary">Advanced</button>
+        <button type="button" onclick="goBack()" class="btn btn-secondary">Cancel</button>
+        <button type="submit" class="btn btn-success">Save</button>
+        
     </form>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ipaddress/1.0.26/ipaddress.min.js"></script>
 <script>
+
+     // Function to go back without changes
+     function goBack() {
+        window.history.back();
+    }
     // Function to calculate broadcast IP
     const calculateBroadcastIp = () => {
         const gatewayValue = document.getElementById("id_gateway").value;
@@ -280,6 +295,14 @@ document.getElementById("id_netmask").addEventListener("change", calculateDhcpRa
 
 // Trigger initial calculation
 calculateDhcpRange();
+
+// Function to display a confirmation dialog before deleting
+function confirmDelete(networkName) {
+        if (confirm(`Are you sure you want to delete "${networkName}"?`)) {
+            // If the user confirms, proceed with the delete action
+            document.querySelector('form.delete-form').submit();
+        }
+    }
 
     // Function to toggle advanced section
     function toggleAdvanced() {

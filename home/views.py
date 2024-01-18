@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.views.generic import ListView, CreateView, UpdateView, View
+from django.views.generic import ListView, CreateView, UpdateView, View, DeleteView
 from .models import *
 from .forms import *
 from django.urls import reverse_lazy
@@ -70,6 +70,11 @@ class NETWORKUpdateView(UpdateView):
     form_class = NETWORKForm
     template_name = 'pages/network_form.html'
     success_url = reverse_lazy('network_list')
+
+class NETWORKDeleteView(DeleteView):
+    model = NETWORK
+    template_name = 'pages/network_confirm_delete.html'  # Create a template for delete confirmation
+    success_url = reverse_lazy('network_list')  # URL to redirect after successful deletion
 
 # SSID views
 class SSIDListView(ListView):

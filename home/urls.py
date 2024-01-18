@@ -25,6 +25,7 @@ urlpatterns = [
     path('network-devices/', NetworkInfrastructureDeviceListView.as_view(), name='network_infrastructure_device_list'),
     path('network-devices/add/', NetworkInfrastructureDeviceCreateView.as_view(), name='network_infrastructure_device_add'),
     path('network-devices/<int:pk>/edit/', NetworkInfrastructureDeviceUpdateView.as_view(), name='network_infrastructure_device_edit'),
+    path('networks/<int:pk>/delete/', NETWORKDeleteView.as_view(), name='network_delete'),
 
     path('devices/', GeneralDeviceListView.as_view(), name='device_list'),
 
