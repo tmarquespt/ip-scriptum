@@ -10,16 +10,16 @@ class Site(models.Model):
 class NETWORK(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    network_id = models.IntegerField()
+    vlan_id = models.IntegerField()
     network_color = models.CharField(max_length=7, help_text="Enter the color in HEX format (e.g., #FF5733)")
     gateway = models.GenericIPAddressField(help_text="Enter the gateway IP address")
     dhcp_range = models.CharField(max_length=50, help_text="Enter the DHCP range (e.g., 192.168.1.100-192.168.1.200)")
 
     def __str__(self):
-        return f"{self.name} (NETWORK {self.network_id})"
+        return f"{self.name} (NETWORK {self.vlan_id})"
 
     class Meta:
-        unique_together = ('site', 'network_id')
+        unique_together = ('site', 'vlan_id')
 
 class SSID(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)

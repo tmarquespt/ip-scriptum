@@ -14,7 +14,7 @@ class NETWORKSelectWidget(Select):
 class NETWORKForm(forms.ModelForm):
     class Meta:
         model = NETWORK
-        fields = ['site', 'name', 'network_id', 'network_color', 'gateway', 'dhcp_range']
+        fields = ['site', 'name', 'vlan_id', 'network_color', 'gateway', 'dhcp_range']
         widgets = {
             'network_color': forms.TextInput(attrs={'type': 'color'}),
             'site': forms.HiddenInput(),  # Set the 'site' field as hidden

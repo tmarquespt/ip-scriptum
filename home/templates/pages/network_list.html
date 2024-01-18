@@ -41,7 +41,7 @@
             {% for network in networks %}
             <tr style="background-color: {{ network.network_color }}; cursor: pointer;" onclick="location.href='{% url 'network_edit' network.pk %}'">
                 <td>{{ network.name }}</td>
-                <td>{{ network.network_id }}</td>
+                <td>{{ network.vlan_id }}</td>
                 <td>{{ network.gateway }}</td>
                 <td>{{ network.dhcp_range }}</td>
             </tr>
