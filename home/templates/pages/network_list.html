@@ -32,7 +32,7 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>NETWORK ID</th>
+                <th>VLAN ID</th>
                 <th>Gateway</th>
                 <th>DHCP Range</th>
             </tr>
@@ -43,7 +43,7 @@
                 <td>{{ network.name }}</td>
                 <td>{{ network.vlan_id }}</td>
                 <td>{{ network.gateway }}</td>
-                <td>{{ network.dhcp_range }}</td>
+                <td>{{ network.dhcp_start }}-{{ network.dhcp_end }}</td>
             </tr>
             {% empty %}
             <tr>

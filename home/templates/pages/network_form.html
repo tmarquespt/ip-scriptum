@@ -1,6 +1,7 @@
 <!-- network_form.html -->
 
 {% extends 'layouts/base.html' %}
+{% load custom_filters %}
 
 {% block content %}
 {% if messages %}
@@ -10,17 +11,17 @@
     {% endfor %}
 </div>
 {% endif %}
-<div class="container mt-8"> <!-- Added margin-top for vertical space -->
+<div class="container mt-8">
     <h2 class="mb-4">{% if object %}Edit{% else %}Add{% endif %} NETWORK</h2>
 
-    <form method="post" class="mb-4">
+    <form method="post" class="mb-4" id="network_form">
         {% csrf_token %}
         {{ form.site }}
+
         <div class="mb-3">
             {{ form.name.label_tag }}
             {{ form.name }}
             {{ form.name.errors }}
-            
         </div>
         <div class="mb-3">
             {{ form.vlan_id.label_tag }}
@@ -38,11 +39,256 @@
             {{ form.gateway.errors }}
         </div>
         <div class="mb-3">
-            {{ form.dhcp_range.label_tag }}
-            {{ form.dhcp_range }}
-            {{ form.dhcp_range.errors }}
+            {{ form.netmask.label_tag }}
+            {{ form.netmask }}
+            {{ form.netmask.errors }}
         </div>
+
+
+        <div class="mb-3">
+            <label for="broadcast_ip">Broadcast IP</label>
+            <span id="broadcast_ip_result"></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="usable_ips">Usable IPs</label>
+            <span id="usable_ips_result"></span>
+        </div>
+        <div class="mb-3">
+            <label for="ip_range">IP Range</label>
+            <span id="ip_range_result"></span>
+        </div>
+        <div class="mb-3">
+            <label for="netmask">Netmask</label>
+            <span id="netmask_result"></span>
+        </div>
+
+
+        <div id="advanced-section" style="display:none;">
+            <div class="mb-3">
+                {{ form.dhcp_server.label_tag }}
+                {{ form.dhcp_server }}
+                {{ form.dhcp_server.errors }}
+            </div>
+            <div class="mb-3">
+                {{ form.dhcp_start.label_tag }}
+                {{ form.dhcp_start }}
+                {{ form.dhcp_start.errors }}
+            </div>
+            <div class="mb-3">
+                {{ form.dhcp_end.label_tag }}
+                {{ form.dhcp_end }}
+                {{ form.dhcp_end.errors }}
+            </div>
+            <div class="mb-3">
+                {{ form.primary_dns.label_tag }}
+                {{ form.primary_dns }}
+                {{ form.primary_dns.errors }}
+            </div>
+            <div class="mb-3">
+                {{ form.secondary_dns.label_tag }}
+                {{ form.secondary_dns }}
+                {{ form.secondary_dns.errors }}
+            </div>
+        </div>
+        <button type="button" onclick="toggleAdvanced()" class="btn btn-secondary">Advanced</button>
         <button type="submit" class="btn btn-primary">Save</button>
     </form>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ipaddress/1.0.26/ipaddress.min.js"></script>
+<script>
+    // Function to calculate broadcast IP
+    const calculateBroadcastIp = () => {
+        const gatewayValue = document.getElementById("id_gateway").value;
+        const netmaskValue = document.getElementById("id_netmask").value;
+        if (gatewayValue && netmaskValue) {
+            const gatewayParts = gatewayValue.split('.');
+            const netmaskBits = parseInt(netmaskValue, 10);
+            if (gatewayParts.length === 4 && netmaskBits >= 0 && netmaskBits <= 32) {
+                const subnetMask = (0xFFFFFFFF << (32 - netmaskBits)) >>> 0;
+                const gatewayIp = (parseInt(gatewayParts[0]) << 24) |
+                                  (parseInt(gatewayParts[1]) << 16) |
+                                  (parseInt(gatewayParts[2]) << 8) |
+                                  parseInt(gatewayParts[3]);
+                const networkIp = (gatewayIp & subnetMask) >>> 0;
+                const broadcastIp = (networkIp | (~subnetMask >>> 0)) >>> 0;
+                const broadcastIpParts = [
+                    (broadcastIp >> 24) & 0xFF,
+                    (broadcastIp >> 16) & 0xFF,
+                    (broadcastIp >> 8) & 0xFF,
+                    broadcastIp & 0xFF
+                ];
+                document.getElementById("broadcast_ip_result").textContent = broadcastIpParts.join('.');
+            } else {
+                document.getElementById("broadcast_ip_result").textContent = "Invalid";
+            }
+        } else {
+            document.getElementById("broadcast_ip_result").textContent = "";
+        }
+    };
+
+    // Add event listeners to input fields
+    document.getElementById("id_gateway").addEventListener("input", calculateBroadcastIp);
+    document.getElementById("id_netmask").addEventListener("change", calculateBroadcastIp);
+
+    // Trigger initial calculation
+    calculateBroadcastIp();
+
+     // Function to calculate usable IPs
+     const calculateUsableIps = () => {
+        const netmaskValue = document.getElementById("id_netmask").value;
+        if (netmaskValue) {
+            const netmaskBits = parseInt(netmaskValue, 10);
+            if (netmaskBits >= 0 && netmaskBits <= 32) {
+                const usableIps = Math.pow(2, 32 - netmaskBits) - 2;
+                document.getElementById("usable_ips_result").textContent = usableIps.toString();
+            } else {
+                document.getElementById("usable_ips_result").textContent = "Invalid";
+            }
+        } else {
+            document.getElementById("usable_ips_result").textContent = "";
+        }
+    };
+
+    // Add event listener to the netmask field
+    document.getElementById("id_netmask").addEventListener("change", calculateUsableIps);
+
+    // Trigger initial calculation
+    calculateUsableIps();
+
+    // Function to calculate IP range
+    const calculateIpRange = () => {
+        const gatewayValue = document.getElementById("id_gateway").value;
+        const netmaskValue = document.getElementById("id_netmask").value;
+        if (gatewayValue && netmaskValue) {
+            const gatewayParts = gatewayValue.split('.');
+            const netmaskBits = parseInt(netmaskValue, 10);
+            if (gatewayParts.length === 4 && netmaskBits >= 0 && netmaskBits <= 32) {
+                const subnetMask = (0xFFFFFFFF << (32 - netmaskBits)) >>> 0;
+                const gatewayIp = (parseInt(gatewayParts[0]) << 24) |
+                                  (parseInt(gatewayParts[1]) << 16) |
+                                  (parseInt(gatewayParts[2]) << 8) |
+                                  parseInt(gatewayParts[3]);
+                const networkIp = (gatewayIp & subnetMask) >>> 0;
+                const broadcastIp = (networkIp | (~subnetMask >>> 0)) >>> 0;
+                const minHostIp = (networkIp + 1) >>> 0;
+                const maxHostIp = (broadcastIp - 1) >>> 0;
+                const minHostIpParts = [
+                    (minHostIp >> 24) & 0xFF,
+                    (minHostIp >> 16) & 0xFF,
+                    (minHostIp >> 8) & 0xFF,
+                    minHostIp & 0xFF
+                ];
+                const maxHostIpParts = [
+                    (maxHostIp >> 24) & 0xFF,
+                    (maxHostIp >> 16) & 0xFF,
+                    (maxHostIp >> 8) & 0xFF,
+                    maxHostIp & 0xFF
+                ];
+                document.getElementById("ip_range_result").textContent =
+                    minHostIpParts.join('.') + '-' + maxHostIpParts.join('.');
+            } else {
+                document.getElementById("ip_range_result").textContent = "Invalid";
+            }
+        } else {
+            document.getElementById("ip_range_result").textContent = "";
+        }
+    };
+
+    // Add event listeners to input fields
+    document.getElementById("id_gateway").addEventListener("input", calculateIpRange);
+    document.getElementById("id_netmask").addEventListener("change", calculateIpRange);
+
+    // Trigger initial calculation
+    calculateIpRange();
+
+    // Function to calculate Netmask
+    const calculateNetmask = () => {
+        const netmaskValue = document.getElementById("id_netmask").value;
+        if (netmaskValue) {
+            const netmaskBits = parseInt(netmaskValue, 10);
+            if (netmaskBits >= 0 && netmaskBits <= 32) {
+                const subnetMask = (0xFFFFFFFF << (32 - netmaskBits)) >>> 0;
+                const netmaskParts = [
+                    (subnetMask >> 24) & 0xFF,
+                    (subnetMask >> 16) & 0xFF,
+                    (subnetMask >> 8) & 0xFF,
+                    subnetMask & 0xFF
+                ];
+                document.getElementById("netmask_result").textContent = netmaskParts.join('.');
+            } else {
+                document.getElementById("netmask_result").textContent = "Invalid";
+            }
+        } else {
+            document.getElementById("netmask_result").textContent = "";
+        }
+    };
+
+    // Add event listener to the netmask field
+    document.getElementById("id_netmask").addEventListener("change", calculateNetmask);
+
+    // Trigger initial calculation
+    calculateNetmask();
+
+    // Function to calculate DHCP Start and End based on gateway and network
+const calculateDhcpRange = () => {
+    const gatewayValue = document.getElementById("id_gateway").value;
+    const netmaskValue = document.getElementById("id_netmask").value;
+    if (gatewayValue && netmaskValue) {
+        const gatewayParts = gatewayValue.split('.');
+        const netmaskBits = parseInt(netmaskValue, 10);
+        if (gatewayParts.length === 4 && netmaskBits >= 0 && netmaskBits <= 32) {
+            const subnetMask = (0xFFFFFFFF << (32 - netmaskBits)) >>> 0;
+            const gatewayIp = (parseInt(gatewayParts[0]) << 24) |
+                              (parseInt(gatewayParts[1]) << 16) |
+                              (parseInt(gatewayParts[2]) << 8) |
+                              parseInt(gatewayParts[3]);
+            const networkIp = (gatewayIp & subnetMask) >>> 0;
+            const dhcpStartIp = (networkIp | 0x00000064) >>> 0;  // Set the 100th host as DHCP Start
+            const dhcpEndIp = (networkIp | 0x000000C8) >>> 0;    // Set the 200th host as DHCP End
+            const dhcpStartIpParts = [
+                (dhcpStartIp >> 24) & 0xFF,
+                (dhcpStartIp >> 16) & 0xFF,
+                (dhcpStartIp >> 8) & 0xFF,
+                dhcpStartIp & 0xFF
+            ];
+            const dhcpEndIpParts = [
+                (dhcpEndIp >> 24) & 0xFF,
+                (dhcpEndIp >> 16) & 0xFF,
+                (dhcpEndIp >> 8) & 0xFF,
+                dhcpEndIp & 0xFF
+            ];
+            // Set the values of the DHCP Start and DHCP End fields
+            document.getElementById("id_dhcp_start").value = dhcpStartIpParts.join('.');
+            document.getElementById("id_dhcp_end").value = dhcpEndIpParts.join('.');
+        } else {
+            // Set the values to "Invalid" if the input is invalid
+            document.getElementById("id_dhcp_start").value = "Invalid";
+            document.getElementById("id_dhcp_end").value = "Invalid";
+        }
+    } else {
+        // Clear the values if gateway or netmask is empty
+        document.getElementById("id_dhcp_start").value = "";
+        document.getElementById("id_dhcp_end").value = "";
+    }
+};
+
+// Add event listeners to input fields
+document.getElementById("id_gateway").addEventListener("input", calculateDhcpRange);
+document.getElementById("id_netmask").addEventListener("change", calculateDhcpRange);
+
+// Trigger initial calculation
+calculateDhcpRange();
+
+    // Function to toggle advanced section
+    function toggleAdvanced() {
+        var x = document.getElementById("advanced-section");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
 {% endblock %}
