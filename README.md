@@ -45,9 +45,9 @@ IP Scriptum is licensed under the **[MIT License](https://github.com/tmarquespt/
 
 ## TODO
 
-# Serviços disponibilizados por cada equipamento
+### Serviços disponibilizados por cada equipamento
 tabela onde se podem criar serviços / portas para depois no equipamento poder clicar e ir a sitios
-# Listagem dos tabelas com ordenação por campo.
+### Listagem dos tabelas com ordenação por campo.
 em todas as tabelas de listagem redes/equips etc ter possibilidade de ordenar por coluna
 
 
