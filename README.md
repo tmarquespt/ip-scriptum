@@ -41,5 +41,5 @@ IP Scriptum uses [Django Soft Design](https://appseed.us/product/soft-ui-design/
 ## License
 IP Scriptum is licensed under the **[MIT License](https://github.com/tmarquespt/ipsymhpony/blob/master/LICENSE.md)**
 
-## IP Scriptum - Seamless Network Organizer
+## IP Scriptum - Seamless Network Organizer.
 
